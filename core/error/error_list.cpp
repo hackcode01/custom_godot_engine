@@ -1,6 +1,6 @@
 #include "./error_list.hpp"
 
-namespace Error {
+namespace NS_Error {
     const char *error_names[49]{
         "OK",                            // OK
         "Failed",                        // FAILED

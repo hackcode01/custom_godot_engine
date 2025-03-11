@@ -1,6 +1,8 @@
 #ifndef __ERROR_MACROS_HPP__
 #define __ERROR_MACROS_HPP__
 
+#pragma warning(disable : 4464)
+
 #include "../object/object_id.hpp"
 #include "../typedefs.hpp"
 
@@ -20,61 +22,61 @@ enum class ErrorHandlerType {
  *  Parameters: userdata, function, file, line, error, explanation, type.
  */
 typedef void (*ErrorHandlerFunction)(void *, const char *, const char *,
-                                    int32_t p_line, const char *, const char *,
-                                    bool p_editor_notify, ErrorHandlerType p_type);
+                                     int32_t p_line, const char *, const char *,
+                                     bool p_editor_notify, ErrorHandlerType p_type);
 
 struct ErrorHandlerList {
     ErrorHandlerFunction error_function = nullptr;
-    void* user_data = nullptr;
+    void *user_data = nullptr;
 
-    ErrorHandlerList* next = nullptr;
+    ErrorHandlerList *next = nullptr;
 
     ErrorHandlerList() {}
 };
 
-void add_error_handler(ErrorHandlerList* p_handler);
-void remove_error_handler(const ErrorHandlerList* p_handler);
+void add_error_handler(ErrorHandlerList *p_handler);
+void remove_error_handler(const ErrorHandlerList *p_handler);
 
 /** Functions used by the error macros. */
-void _error_print_error(const char* p_function, const char* p_file, int p_line,
-                        const char* p_error, bool p_editor_notify = false,
+void _error_print_error(const char *p_function, const char *p_file, int p_line,
+                        const char *p_error, bool p_editor_notify = false,
                         ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_error(const char* p_function, const char* p_file, int32_t p_line,
-                        const String& p_error, bool p_editor_notify = false,
+void _error_print_error(const char *p_function, const char *p_file, int32_t p_line,
+                        const String &p_error, bool p_editor_notify = false,
                         ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_error(const char* p_function, const char* p_file, int32_t p_line,
-                        const char* p_error, const char* p_message,
+void _error_print_error(const char *p_function, const char *p_file, int32_t p_line,
+                        const char *p_error, const char *p_message,
                         bool p_editor_notify = false,
                         ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_error(const char* p_function, const char* p_file, int32_t p_line,
-                        const String& p_error, const char* p_message,
+void _error_print_error(const char *p_function, const char *p_file, int32_t p_line,
+                        const String &p_error, const char *p_message,
                         bool p_editor_notify = false,
                         ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_error(const char* p_function, const char* p_file, int32_t p_line,
-                        const char* p_error, const String& p_message,
+void _error_print_error(const char *p_function, const char *p_file, int32_t p_line,
+                        const char *p_error, const String &p_message,
                         bool p_editor_notify = false,
                         ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_error(const char* p_function, const char* p_file, int32_t p_line,
-                        const String& p_error, const String& p_message,
+void _error_print_error(const char *p_function, const char *p_file, int32_t p_line,
+                        const String &p_error, const String &p_message,
                         bool p_editor_notify = false,
                         ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_error_asap(const String& p_error,
+void _error_print_error_asap(const String &p_error,
                              ErrorHandlerType p_type = ErrorHandlerType::ERROR_HANDLER_ERROR);
 
-void _error_print_index_error(const char* p_function, const char* p_file, int32_t p_line,
-                              int64_t p_index, int64_t p_size, const char* p_index_str,
-                              const char* p_size_str, const char* p_message = "",
+void _error_print_index_error(const char *p_function, const char *p_file, int32_t p_line,
+                              int64_t p_index, int64_t p_size, const char *p_index_str,
+                              const char *p_size_str, const char *p_message = "",
                               bool p_editor_notify = false, bool fatal = false);
 
-void _error_print_index_error(const char* p_function, const char* p_file, int32_t p_line,
-                              int64_t p_index, int64_t p_size, const char* p_index_str,
-                              const char* p_size_str, const String& p_message,
+void _error_print_index_error(const char *p_function, const char *p_file, int32_t p_line,
+                              int64_t p_index, int64_t p_size, const char *p_index_str,
+                              const char *p_size_str, const String &p_message,
                               bool p_editor_notify = false, bool fatal = false);
 
 void _error_flush_stdout();
@@ -102,7 +104,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
 #endif
 
 /**
- * Error macros.
+ * NS_Error macros.
  * WARNING: These macros work in the opposite way to assert().
  *
  * Unlike exceptions and asserts, these macros try to maintain consistency and stability.
@@ -124,7 +126,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
 /** Integer index out of bounds error macros. */
 
 /**
- * Try using `ERR_FAIL_INDEX_MSG`.
+ * Try using `ERROR_FAIL_INDEX_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures an integer index `m_index` is less than `m_size` and greater than or equal to 0.
@@ -137,7 +139,9 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return;                                                                                                   \
     }                                                                                                             \
     else                                                                                                          \
-        ((void)0)
+    {                                                                                                             \
+        ((void)0)                                                                                                 \
+    }
 
 /**
  * Ensures an integer index `m_index` is less than `m_size` and greater than or equal to 0.
@@ -150,10 +154,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return;                                                                                                          \
     }                                                                                                                    \
     else                                                                                                                 \
-        ((void)0)
+    {                                                                                                                    \
+        ((void)0)                                                                                                        \
+    }
 
 /**
- * Same as `ERR_FAIL_INDEX_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_INDEX_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_INDEX_EDMSG(m_index, m_size, m_msg)                                                                         \
     if (unlikely((m_index) < 0 || (m_index) >= (m_size)))                                                                      \
@@ -162,10 +168,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return;                                                                                                                \
     }                                                                                                                          \
     else                                                                                                                       \
-        ((void)0)
+    {                                                                                                                          \
+        ((void)0)                                                                                                              \
+    }
 
 /**
- * Try using `ERR_FAIL_INDEX_V_MSG`.
+ * Try using `ERROR_FAIL_INDEX_V_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures an integer index `m_index` is less than `m_size` and greater than or equal to 0.
@@ -178,7 +186,9 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return m_retval;                                                                                          \
     }                                                                                                             \
     else                                                                                                          \
-        ((void)0)
+    {                                                                                                             \
+        ((void)0)                                                                                                 \
+    }
 
 /**
  * Ensures an integer index `m_index` is less than `m_size` and greater than or equal to 0.
@@ -191,10 +201,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return m_retval;                                                                                                 \
     }                                                                                                                    \
     else                                                                                                                 \
-        ((void)0)
+    {                                                                                                                    \
+        ((void)0)                                                                                                        \
+    }
 
 /**
- * Same as `ERR_FAIL_INDEX_V_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_INDEX_V_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_INDEX_V_EDMSG(m_index, m_size, m_retval, m_msg)                                                             \
     if (unlikely((m_index) < 0 || (m_index) >= (m_size)))                                                                      \
@@ -203,10 +215,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return m_retval;                                                                                                       \
     }                                                                                                                          \
     else                                                                                                                       \
-        ((void)0)
+    {                                                                                                                          \
+        ((void)0)                                                                                                              \
+    }
 
 /**
- * Try using `ERR_FAIL_INDEX_MSG` or `ERR_FAIL_INDEX_V_MSG`.
+ * Try using `ERROR_FAIL_INDEX_MSG` or `ERROR_FAIL_INDEX_V_MSG`.
  * Only use this macro if there is no sensible fallback i.e. the error is unrecoverable, and
  * there is no sensible error message.
  *
@@ -221,10 +235,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         GENERATE_TRAP();                                                                                                           \
     }                                                                                                                              \
     else                                                                                                                           \
-        ((void)0)
+    {                                                                                                                              \
+        ((void)0)                                                                                                                  \
+    }
 
 /**
- * Try using `ERR_FAIL_INDEX_MSG` or `ERR_FAIL_INDEX_V_MSG`.
+ * Try using `ERROR_FAIL_INDEX_MSG` or `ERROR_FAIL_INDEX_V_MSG`.
  * Only use this macro if there is no sensible fallback i.e. the error is unrecoverable.
  *
  * Ensures an integer index `m_index` is less than `m_size` and greater than or equal to 0.
@@ -238,12 +254,14 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         GENERATE_TRAP();                                                                                                              \
     }                                                                                                                                 \
     else                                                                                                                              \
-        ((void)0)
+    {                                                                                                                                 \
+        ((void)0)                                                                                                                     \
+    }
 
 /** Unsigned integer index out of bounds error macros. */
 
 /**
- * Try using `ERR_FAIL_UNSIGNED_INDEX_MSG`.
+ * Try using `ERROR_FAIL_UNSIGNED_INDEX_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures an unsigned integer index `m_index` is less than `m_size`.
@@ -256,7 +274,9 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return;                                                                                                   \
     }                                                                                                             \
     else                                                                                                          \
-        ((void)0)
+    {                                                                                                             \
+        ((void)0)                                                                                                 \
+    }
 
 /**
  * Ensures an unsigned integer index `m_index` is less than `m_size`.
@@ -269,10 +289,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return;                                                                                                          \
     }                                                                                                                    \
     else                                                                                                                 \
-        ((void)0)
+    {                                                                                                                    \
+        ((void)0)                                                                                                        \
+    }
 
 /**
- * Same as `ERR_FAIL_UNSIGNED_INDEX_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_UNSIGNED_INDEX_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_UNSIGNED_INDEX_EDMSG(m_index, m_size, m_msg)                                                                \
     if (unlikely((m_index) >= (m_size)))                                                                                       \
@@ -281,10 +303,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return;                                                                                                                \
     }                                                                                                                          \
     else                                                                                                                       \
-        ((void)0)
+    {                                                                                                                          \
+        ((void)0)                                                                                                              \
+    }
 
 /**
- * Try using `ERR_FAIL_UNSIGNED_INDEX_V_MSG`.
+ * Try using `ERROR_FAIL_UNSIGNED_INDEX_V_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures an unsigned integer index `m_index` is less than `m_size`.
@@ -297,7 +321,9 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return m_retval;                                                                                          \
     }                                                                                                             \
     else                                                                                                          \
-        ((void)0)
+    {                                                                                                             \
+        ((void)0)                                                                                                 \
+    }
 
 /**
  * Ensures an unsigned integer index `m_index` is less than `m_size`.
@@ -310,10 +336,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         return m_retval;                                                                                                 \
     }                                                                                                                    \
     else                                                                                                                 \
-        ((void)0)
+    {                                                                                                                    \
+        ((void)0)                                                                                                        \
+    }
 
 /**
- * Same as `ERR_FAIL_UNSIGNED_INDEX_V_EDMSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_UNSIGNED_INDEX_V_EDMSG` but also notifies the editor.
  */
 #define ERROR_FAIL_UNSIGNED_INDEX_V_EDMSG(m_index, m_size, m_retval, m_msg)                                                    \
     if (unlikely((m_index) >= (m_size)))                                                                                       \
@@ -325,7 +353,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_UNSIGNED_INDEX_MSG` or `ERR_FAIL_UNSIGNED_INDEX_V_MSG`.
+ * Try using `ERROR_FAIL_UNSIGNED_INDEX_MSG` or `ERROR_FAIL_UNSIGNED_INDEX_V_MSG`.
  * Only use this macro if there is no sensible fallback i.e. the error is unrecoverable, and
  * there is no sensible error message.
  *
@@ -343,7 +371,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_UNSIGNED_INDEX_MSG` or `ERR_FAIL_UNSIGNED_INDEX_V_MSG`.
+ * Try using `ERROR_FAIL_UNSIGNED_INDEX_MSG` or `ERROR_FAIL_UNSIGNED_INDEX_V_MSG`.
  * Only use this macro if there is no sensible fallback i.e. the error is unrecoverable.
  *
  * Ensures an unsigned integer index `m_index` is less than `m_size`.
@@ -362,7 +390,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
 /** Null reference error macros. */
 
 /**
- * Try using `ERR_FAIL_NULL_MSG`.
+ * Try using `ERROR_FAIL_NULL_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures a pointer `m_param` is not null.
@@ -391,7 +419,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_FAIL_NULL_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_NULL_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_NULL_EDMSG(m_param, m_msg)                                                                          \
     if (unlikely(m_param == nullptr))                                                                                  \
@@ -403,7 +431,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_NULL_V_MSG`.
+ * Try using `ERROR_FAIL_NULL_V_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures a pointer `m_param` is not null.
@@ -432,7 +460,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_FAIL_NULL_V_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_NULL_V_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_NULL_V_EDMSG(m_param, m_retval, m_msg)                                                              \
     if (unlikely(m_param == nullptr))                                                                                  \
@@ -444,10 +472,10 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_MSG`.
+ * Try using `ERROR_FAIL_COND_MSG`.
  * Only use this macro if there is no sensible error message.
- * If checking for null use ERR_FAIL_NULL_MSG instead.
- * If checking index bounds use ERR_FAIL_INDEX_MSG instead.
+ * If checking for null use ERROR_FAIL_NULL_MSG instead.
+ * If checking index bounds use ERROR_FAIL_INDEX_MSG instead.
  *
  * Ensures `m_cond` is false.
  * If `m_cond` is true, the current function returns.
@@ -465,8 +493,8 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
  * Ensures `m_cond` is false.
  * If `m_cond` is true, prints `m_msg` and the current function returns.
  *
- * If checking for null use ERR_FAIL_NULL_MSG instead.
- * If checking index bounds use ERR_FAIL_INDEX_MSG instead.
+ * If checking for null use ERROR_FAIL_NULL_MSG instead.
+ * If checking index bounds use ERROR_FAIL_INDEX_MSG instead.
  */
 #define ERROR_FAIL_COND_MSG(m_cond, m_msg)                                                                      \
     if (unlikely(m_cond))                                                                                       \
@@ -478,7 +506,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_FAIL_COND_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_COND_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_COND_EDMSG(m_cond, m_msg)                                                                          \
     if (unlikely(m_cond))                                                                                             \
@@ -490,10 +518,10 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_V_MSG`.
+ * Try using `ERROR_FAIL_COND_V_MSG`.
  * Only use this macro if there is no sensible error message.
- * If checking for null use ERR_FAIL_NULL_V_MSG instead.
- * If checking index bounds use ERR_FAIL_INDEX_V_MSG instead.
+ * If checking for null use ERROR_FAIL_NULL_V_MSG instead.
+ * If checking index bounds use ERROR_FAIL_INDEX_V_MSG instead.
  *
  * Ensures `m_cond` is false.
  * If `m_cond` is true, the current function returns `m_retval`.
@@ -511,8 +539,8 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
  * Ensures `m_cond` is false.
  * If `m_cond` is true, prints `m_msg` and the current function returns `m_retval`.
  *
- * If checking for null use ERR_FAIL_NULL_V_MSG instead.
- * If checking index bounds use ERR_FAIL_INDEX_V_MSG instead.
+ * If checking for null use ERROR_FAIL_NULL_V_MSG instead.
+ * If checking index bounds use ERROR_FAIL_INDEX_V_MSG instead.
  */
 #define ERROR_FAIL_COND_V_MSG(m_cond, m_retval, m_msg)                                                                                     \
     if (unlikely(m_cond))                                                                                                                  \
@@ -524,7 +552,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_FAIL_COND_V_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_COND_V_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_COND_V_EDMSG(m_cond, m_retval, m_msg)                                                                                         \
     if (unlikely(m_cond))                                                                                                                        \
@@ -536,7 +564,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_CONTINUE_MSG`.
+ * Try using `ERROR_CONTINUE_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures `m_cond` is false.
@@ -565,7 +593,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_CONTINUE_MSG` but also notifies the editor.
+ * Same as `ERROR_CONTINUE_MSG` but also notifies the editor.
  */
 #define ERROR_CONTINUE_EDMSG(m_cond, m_msg)                                                                                       \
     if (unlikely(m_cond))                                                                                                         \
@@ -577,7 +605,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_BREAK_MSG`.
+ * Try using `ERROR_BREAK_MSG`.
  * Only use this macro if there is no sensible error message.
  *
  * Ensures `m_cond` is false.
@@ -606,7 +634,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_BREAK_MSG` but also notifies the editor.
+ * Same as `ERROR_BREAK_MSG` but also notifies the editor.
  */
 #define ERROR_BREAK_EDMSG(m_cond, m_msg)                                                                                        \
     if (unlikely(m_cond))                                                                                                       \
@@ -618,7 +646,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_MSG` or `ERR_FAIL_COND_V_MSG`.
+ * Try using `ERROR_FAIL_COND_MSG` or `ERROR_FAIL_COND_V_MSG`.
  * Only use this macro if there is no sensible fallback i.e. the error is unrecoverable, and
  * there is no sensible error message.
  *
@@ -636,7 +664,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_MSG` or `ERR_FAIL_COND_V_MSG`.
+ * Try using `ERROR_FAIL_COND_MSG` or `ERROR_FAIL_COND_V_MSG`.
  * Only use this macro if there is no sensible fallback i.e. the error is unrecoverable.
  *
  * Ensures `m_cond` is false.
@@ -655,7 +683,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
 /** Generic error macros. */
 
 /**
- * Try using `ERR_FAIL_COND_MSG` or `ERR_FAIL_MSG`.
+ * Try using `ERROR_FAIL_COND_MSG` or `ERROR_FAIL_MSG`.
  * Only use this macro if more complex error detection or recovery is required, and
  * there is no sensible error message.
  *
@@ -671,7 +699,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_MSG`.
+ * Try using `ERROR_FAIL_COND_MSG`.
  * Only use this macro if more complex error detection or recovery is required.
  *
  * Prints `m_msg`, and the current function returns.
@@ -686,7 +714,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_FAIL_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_EDMSG(m_msg)                                                                       \
     if (true)                                                                                         \
@@ -698,7 +726,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_V_MSG` or `ERR_FAIL_V_MSG`.
+ * Try using `ERROR_FAIL_COND_V_MSG` or `ERROR_FAIL_V_MSG`.
  * Only use this macro if more complex error detection or recovery is required, and
  * there is no sensible error message.
  *
@@ -714,7 +742,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_V_MSG`.
+ * Try using `ERROR_FAIL_COND_V_MSG`.
  * Only use this macro if more complex error detection or recovery is required.
  *
  * Prints `m_msg`, and the current function returns `m_retval`.
@@ -729,7 +757,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_FAIL_V_MSG` but also notifies the editor.
+ * Same as `ERROR_FAIL_V_MSG` but also notifies the editor.
  */
 #define ERROR_FAIL_V_EDMSG(m_retval, m_msg)                                                                                      \
     if (true)                                                                                                                    \
@@ -741,7 +769,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Try using `ERR_FAIL_COND_MSG`, `ERR_FAIL_COND_V_MSG`, `ERR_CONTINUE_MSG` or `ERR_BREAK_MSG`.
+ * Try using `ERROR_FAIL_COND_MSG`, `ERROR_FAIL_COND_V_MSG`, `ERROR_CONTINUE_MSG` or `ERROR_BREAK_MSG`.
  * Only use this macro at the start of a function that has not been implemented yet, or
  * if more complex error detection or recovery is required.
  *
@@ -751,7 +779,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
     _error_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg)
 
 /**
- * Same as `ERR_PRINT` but also notifies the editor.
+ * Same as `ERROR_PRINT` but also notifies the editor.
  */
 #define ERROR_PRINT_ED(m_msg) \
     _error_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg, true)
@@ -773,7 +801,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `ERR_PRINT_ONCE` but also notifies the editor.
+ * Same as `ERROR_PRINT_ONCE` but also notifies the editor.
  */
 #define ERROR_PRINT_ONCE_ED(m_msg)                                             \
     if (true)                                                                  \
@@ -793,13 +821,13 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
 /**
  * Prints `m_msg`.
  *
- * If warning about deprecated usage, use `WARN_DEPRECATED` or `WARN_DEPRECATED_MSG` instead.
+ * If warning about deprecated usage, use `WARNING_DEPRECATED` or `WARNING_DEPRECATED_MSG` instead.
  */
 #define WARNING_PRINT(m_msg) \
     _error_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg, false, ERR_HANDLER_WARNING)
 
 /**
- * Same as `WARN_PRINT` but also notifies the editor.
+ * Same as `WARNING_PRINT` but also notifies the editor.
  */
 #define WARNING_PRINT_ED(m_msg) \
     _error_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg, true, ERR_HANDLER_WARNING)
@@ -823,7 +851,7 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
         ((void)0)
 
 /**
- * Same as `WARN_PRINT_ONCE` but also notifies the editor.
+ * Same as `WARNING_PRINT_ONCE` but also notifies the editor.
  */
 #define WARNING_PRINT_ONCE_ED(m_msg)                                                                \
     if (true)                                                                                       \
@@ -931,12 +959,14 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
  */
 #ifdef DEV_ENABLED
 #define DEV_ASSERT(m_cond)                                                                                                \
-    if (unlikely(!(m_cond))) {                                                                                            \
+    if (unlikely(!(m_cond)))                                                                                              \
+    {                                                                                                                     \
         _error_print_error(FUNCTION_STR, __FILE__, __LINE__, "FATAL: DEV_ASSERT failed  \"" _STR(m_cond) "\" is false."); \
         _error_flush_stdout();                                                                                            \
         GENERATE_TRAP();                                                                                                  \
     }                                                                                                                     \
-    else {                                                                                                                \
+    else                                                                                                                  \
+    {                                                                                                                     \
         ((void)0)                                                                                                         \
     }
 #else
@@ -945,10 +975,12 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file,
 
 #ifdef DEV_ENABLED
 #define DEV_CHECK_ONCE(m_cond)                                                     \
-    if (unlikely(!(m_cond))) {                                                     \
+    if (unlikely(!(m_cond)))                                                       \
+    {                                                                              \
         ERROR_PRINT_ONCE("DEV_CHECK_ONCE failed  \"" _STR(m_cond) "\" is false."); \
     }                                                                              \
-    else {                                                                         \
+    else                                                                           \
+    {                                                                              \
         ((void)0)                                                                  \
     }
 #else

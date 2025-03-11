@@ -3,10 +3,11 @@
 
 #include <cstdint>
 
-namespace Error {
+namespace NS_Error {
 
     /** Errors used for the engine logic */
     enum class Errors : int32_t {
+        NONE = 0,
         FAILED = 1,
         ERROR_UNAVAILABLE,
         ERROR_UNCONFIGURED,

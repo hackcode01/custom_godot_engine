@@ -1,6 +1,8 @@
 #ifndef __TYPEDEFS_HPP__
 #define __TYPEDEFS_HPP__
 
+#pragma warning(disable : 4464)
+
 #include <stddef.h>
 
 #include "../platform/android/platform_config.hpp"
@@ -125,7 +127,7 @@ static _FORCE_INLINE_ unsigned int closest_power_of_2(unsigned int x) {
 }
 
 static inline int get_shift_from_power_of_2(unsigned int p_bits) {
-	for (unsigned int i = 0; i < 32; i++) {
+	for (int i = 0; i < 32; ++i) {
 		if (p_bits == (unsigned int)(1 << i)) {
 			return i;
 		}
@@ -150,7 +152,7 @@ static _FORCE_INLINE_ T nearest_power_of_2_templated(T x) {
 static inline unsigned int nearest_shift(unsigned int p_number) {
 	for (int i = 30; i >= 0; i--) {
 		if (p_number & (1 << i)) {
-			return i + 1;
+			return uint32_t(i + 1);
 		}
 	}
 
