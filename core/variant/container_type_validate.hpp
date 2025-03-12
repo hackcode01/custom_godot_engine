@@ -1,0 +1,6 @@
+#ifndef __CONTAINER_TYPE_VALIDATE_HPP__
+#define __CONTAINER_TYPE_VALIDATE_HPP__
+
+
+
+#endif
